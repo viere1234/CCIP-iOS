@@ -19,7 +19,7 @@ final class APIManager {
         case status(String, String)
         case use(String, String, String)
         case any(String)
-        
+
         var string: String {
             switch self {
             case .events:

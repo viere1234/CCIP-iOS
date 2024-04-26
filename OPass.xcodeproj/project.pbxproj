@@ -166,6 +166,7 @@
 		D3652A732869AF72002AC419 /* AttributedTextImpl+macOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AttributedTextImpl+macOS.swift"; sourceTree = "<group>"; };
 		D3652A742869AF72002AC419 /* AttributedTextImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributedTextImpl.swift; sourceTree = "<group>"; };
 		D3652A762869AF72002AC419 /* AttributedTextImpl+iOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AttributedTextImpl+iOS.swift"; sourceTree = "<group>"; };
+		D3656CE02BD9428700974D7B /* OPassData2 */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = OPassData2; sourceTree = "<group>"; };
 		D366ADC72898413F00F33CEC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D36A2FD72829F9C500EFBDB1 /* NEHotspot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEHotspot.swift; sourceTree = "<group>"; };
 		D36E33C52A684CC8006D4159 /* Data+CryptoKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+CryptoKit.swift"; sourceTree = "<group>"; };
@@ -456,6 +457,7 @@
 			isa = PBXGroup;
 			children = (
 				D3E4E6BD27CD158400FFACEB /* OPass */,
+				D3656CE02BD9428700974D7B /* OPassData2 */,
 				D3D3788027CE43D700021FC4 /* OPassData */,
 				D3652A6E2869AF17002AC419 /* Modules */,
 				D3F23B4B28166CE200A0FB35 /* Supporting Files */,
