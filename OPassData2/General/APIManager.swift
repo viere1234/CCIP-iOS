@@ -11,33 +11,35 @@ import OSLog
 
 private let logger = Logger(subsystem: "OPassData", category: "Fetch")
 
-func fetch<T: Decodable>(from endpoint: String) async throws -> T {
-    guard let url = URL(string: endpoint) else {
-        logger.error("Invalid URL: \(endpoint)")
-        throw LoadError.invalidURL(endpoint)
-    }
-    let urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData)
-    do {
-        let (data, response) = try await URLSession.shared.data(for: urlRequest)
-        if let response = response as? HTTPURLResponse {
-            switch response.statusCode {
-            case 403:
-                logger.warning("Http 403 Forbidden with url: \(endpoint)")
-                throw LoadError.forbidden
-            default:
-                break
-            }
+extension URLSession {
+    static func fetch<T: Decodable>(for endpoint: String) async throws -> T {
+        guard let url = URL(string: endpoint) else {
+            logger.error("Invalid URL: \(endpoint)")
+            throw LoadError.invalidURL(endpoint)
         }
-        let decoder = JSONDecoder()
-        return try decoder.decode(T.self, from: data)
-    } catch LoadError.forbidden {
-        throw LoadError.forbidden
-    } catch where error is DecodingError {
-        logger.error("Decode Faild with: \(error.localizedDescription), url: \(endpoint)")
-        throw LoadError.decodeFaild(error)
-    } catch {
-        logger.error("Fetch Faild with: \(error.localizedDescription), url: \(endpoint)")
-        throw LoadError.fetchFaild(error)
+        let urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData)
+        do {
+            let (data, response) = try await URLSession.shared.data(for: urlRequest)
+            if let response = response as? HTTPURLResponse {
+                switch response.statusCode {
+                case 403:
+                    logger.warning("Http 403 Forbidden with url: \(endpoint)")
+                    throw LoadError.forbidden
+                default:
+                    break
+                }
+            }
+            let decoder = JSONDecoder()
+            return try decoder.decode(T.self, from: data)
+        } catch LoadError.forbidden {
+            throw LoadError.forbidden
+        } catch where error is DecodingError {
+            logger.error("Decode Faild with: \(error.localizedDescription), url: \(endpoint)")
+            throw LoadError.decodeFaild(error)
+        } catch {
+            logger.error("Fetch Faild with: \(error.localizedDescription), url: \(endpoint)")
+            throw LoadError.fetchFaild(error)
+        }
     }
 }
 

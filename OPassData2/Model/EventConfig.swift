@@ -42,3 +42,10 @@ import SwiftData
         self.features = try container.decode([Feature].self, forKey: .features)
     }
 }
+
+extension EventConfig {
+    @inline(__always)
+    func feature(_ type: FeatureType) -> Feature? {
+        return features.first { $0.feature == type }
+    }
+}
