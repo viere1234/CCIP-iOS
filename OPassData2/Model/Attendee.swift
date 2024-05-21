@@ -13,11 +13,12 @@ import OrderedCollections
 @Model public class Attendee: Decodable, Identifiable {
     @Attribute(.unique) public var id: String
     @Attribute(.unique) public var eventID: String
-    public var userID: String?
+    @Attribute(.unique) public var userID: String?
     public var token: String
     public var role: String
     public var attributes: [String : String]
     public var firstUse: DateInRegion
+    @Relationship(deleteRule: .cascade)
     public var scenarios: OrderedDictionary<String, [Scenario]>
 
     public init(id: String, eventID: String, userID: String? = nil, token: String, role: String, attributes: [String : String], firstUse: DateInRegion, scenarios: OrderedDictionary<String, [Scenario]>) {

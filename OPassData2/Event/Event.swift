@@ -17,6 +17,7 @@ private let logger = Logger(subsystem: "OPassData", category: "Event")
     @Attribute(.unique) public let id: String
     @Relationship(.unique, deleteRule: .cascade)
     public var config: EventConfig
+    @Relationship(deleteRule: .cascade)
     public var attendee: Attendee?
 
     @Transient private let keychain = Keychain(service: "app.opass.ccip.token").synchronizable(true)
