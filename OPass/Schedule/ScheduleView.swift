@@ -234,8 +234,8 @@ private struct SelectDayView: View {
                         .fontWeight(.medium)
                         .foregroundColor(caculateColor(index))
                         .frame(maxWidth: .infinity)
-                        .padding(.bottom, 10)
-                        .padding(.top, 2)
+                        .padding(.bottom, 11)
+                        .padding(.top, 3)
                     }
                 }
             }
@@ -259,7 +259,7 @@ private struct SelectDayView: View {
     }
     
     private func caculateColor(_ index: Int) -> Color {
-        let factor = min(abs(Float(tabProgress) - (Float(index) / Float(sessions.count - 1))) * 2.0 * Float(sessions.count - 1), 1.0)
+        let factor = min(abs(Float(tabProgress) - (Float(index) / Float(sessions.count - 1))) / (1.0 / Float(sessions.count - 1)), 1.0)
         let color = (colorScheme == .dark ? colorWhite : colorBlack) * Double(1.0 - factor) + colorGray * Double(factor)
         return .init(red: color.x, green: color.x, blue: color.y)
     }
