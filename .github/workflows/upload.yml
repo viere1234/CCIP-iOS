@@ -28,8 +28,7 @@ jobs:
 
     - name: Update version in Xcode project
       run: |
-        ls
-        /usr/libexec/PlistBuddy -c Print "Supporting Files/Info.plist"
+        /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "Supporting Files/Info.plist"
         
 
     - name: Push changes
