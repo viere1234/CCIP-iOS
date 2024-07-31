@@ -28,6 +28,7 @@ jobs:
 
     - name: Update version in Xcode project
       run: |
+        pwd
         /usr/libexec/PlistBuddy -c "Set CFBundleShortVersionString ${{ github.event.inputs.version }}" "Supporting Files/Info.plist"
         /usr/libexec/PlistBuddy -c "Set CFBundleShortVersionString ${{ github.event.inputs.version }}" "OneSignalNotificationServiceExtension/Info.plist"
 
