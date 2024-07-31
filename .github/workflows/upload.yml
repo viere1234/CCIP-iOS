@@ -28,7 +28,7 @@ jobs:
 
     - name: Update version in Xcode project
       run: |
-        /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString 4.2.8" "Supporting Files/Info.plist"
+        /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString ${{ github.event.inputs.version }}" "Supporting Files/Info.plist"
         
 
     - name: Push changes
