@@ -55,10 +55,8 @@ jobs:
           else
             echo "Creating orphan branch 'xliff'..."
             git switch --orphan xliff
-            git rm -rf . || true
           fi
 
-          cp LocalizationExport/*.xliff .
           git add *.xliff || true
 
           if ! git diff --cached --quiet; then
