@@ -52,7 +52,7 @@
     </header>
     <body>
       <trans-unit id="&quot;%@&quot; in room &quot;%@&quot;, please keep your time of buffer to reach the room." xml:space="preserve">
-        <source>"%@" in room "%@", please keep your time of buffer to reach the room.</source>
+        <source>"%@" in rroom "%@", please keep your time of buffer to reach the room.</source>
         <target state="translated">「%@」在會議室「%@」，請儘速前往！</target>
         <note/>
       </trans-unit>

@@ -60,8 +60,8 @@
     </header>
     <body>
       <trans-unit id="&quot;%@&quot; in room &quot;%@&quot;, please keep your time of buffer to reach the room." xml:space="preserve">
-        <source>"%@" in room "%@", please keep your time of buffer to reach the room.</source>
-        <target state="translated">"%@" in room "%@", please keep your time of buffer to reach the room.</target>
+        <source>"%@" in rroom "%@", please keep your time of buffer to reach the room.</source>
+        <target state="translated">"%@" in rroom "%@", please keep your time of buffer to reach the room.</target>
         <note/>
       </trans-unit>
       <trans-unit id="%d:%02d ~ %d:%02d • %d minutes" xml:space="preserve">
