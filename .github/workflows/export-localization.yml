@@ -29,6 +29,8 @@ jobs:
 
       - name: Export XLIFF
         run: |
+          set -euo pipefail
+
           rm -rf LocalizationExport
           mkdir -p LocalizationExport
 
@@ -42,27 +44,52 @@ jobs:
             -exportLanguage nan \
             -exportLanguage zh-Hant
 
+          # Copy exported .xliff to repo root for the commit step
           rm -f *.xliff || true
           find LocalizationExport -name "*.xliff" -print0 | xargs -0 -I{} cp "{}" . || true
 
       - name: Commit XLIFF
         run: |
-          if git ls-remote --exit-code --heads origin xliff > /dev/null 2>&1; then
-            git fetch origin xliff:refs/remotes/origin/xliff || true
-            git switch -c xliff --track origin/xliff
-          else
-            echo "Creating orphan branch 'xliff' (first time only)…"
-            git switch --orphan xliff
-          fi
-
+          ls
+          set -euo pipefail
           shopt -s nullglob
+
+          # Gather XLIFFs; exit early if none
           files=( *.xliff )
           if [ ${#files[@]} -eq 0 ]; then
             echo "No XLIFF export found. Skipping commit."
             exit 0
           fi
 
-          git add "${files[@]}"
+          # Move XLIFFs aside so switching branches won't be blocked by untracked files
+          tmp=".xliff_tmp"
+          rm -rf "$tmp"
+          mkdir -p "$tmp"
+          mv "${files[@]}" "$tmp/"
+
+          # Case 1: remote branch exists → use it; else create orphan (empty) branch
+          if git ls-remote --exit-code --heads origin xliff > /dev/null 2>&1; then
+            echo "Remote 'origin/xliff' exists. Switching to it…"
+            git fetch origin xliff:refs/remotes/origin/xliff || true
+            git switch -c xliff --track origin/xliff 2>/dev/null || git switch xliff
+          else
+            echo "Creating orphan branch 'xliff' (first time only)…"
+            git switch --orphan xliff
+            # Orphan has empty index; nothing to remove
+          fi
+
+          # Bring XLIFFs back and commit
+          shopt -s nullglob
+          mv "$tmp"/*.xliff . || true
+          rmdir "$tmp" || true
+
+          xliffs=( *.xliff )
+          if [ ${#xliffs[@]} -eq 0 ]; then
+            echo "No XLIFFs after branch switch. Nothing to commit."
+            exit 0
+          fi
+
+          git add "${xliffs[@]}"
 
           if ! git diff --cached --quiet; then
             git -c user.name="github-actions" -c user.email="actions@users.noreply.github.com" \
