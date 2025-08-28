@@ -32,7 +32,7 @@ jobs:
           rm -rf LocalizationExport
           mkdir -p LocalizationExport
           xcodebuild \
-            -project iosApp/OPass.xcodeproj \
+            -project OPass.xcodeproj \
             -scheme OPass \
             -localizationPath LocalizationExport \
             -exportLocalizations
