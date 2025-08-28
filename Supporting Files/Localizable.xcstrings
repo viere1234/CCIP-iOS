@@ -6,7 +6,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "\"%@\" in room \"%@\", please keep your time of buffer to reach the room."
+            "value" : "\"%@\" in rroom \"%@\", please keep your time of buffer to reach the room."
           }
         },
         "ja" : {
