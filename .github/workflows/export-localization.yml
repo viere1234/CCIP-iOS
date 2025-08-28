@@ -35,23 +35,32 @@ jobs:
             -project OPass.xcodeproj \
             -scheme OPass \
             -localizationPath LocalizationExport \
-            -exportLocalizations
+            -exportLocalizations \
+            -exportLanguage en \
+            -exportLanguage jp \
+            -exportLanguage nan \
+            -exportLanguage zh-Hant \
+            
           rm -f *.xliff
           find LocalizationExport -name "*.xliff" -print0 | xargs -0 -I{} cp "{}" . || true
 
 
-      - name: Commit XLIFF to branch xliff
+      - name: Commit XLIFF
         run: |
           set -e
           git fetch origin || true
 
           if git show-ref --quiet refs/remotes/origin/xliff; then
-            git switch -C xliff origin/xliff
+            git switch xliff || git switch -c xliff origin/xliff
           else
-            git switch -C xliff
+            echo "Creating orphan branch 'xliff'..."
+            git switch --orphan xliff
+            git rm -rf . || true
           fi
 
+          cp LocalizationExport/*.xliff .
           git add *.xliff || true
+
           if ! git diff --cached --quiet; then
             git -c user.name="github-actions" -c user.email="actions@users.noreply.github.com" \
               commit -m "[localization-bot] Export Apple XLIFF from String Catalogs"
@@ -59,4 +68,5 @@ jobs:
           else
             echo "No XLIFF changes."
           fi
+
 
