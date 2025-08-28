@@ -1,0 +1,53 @@
+# SPDX-FileCopyrightText: 2025 OPass
+# SPDX-License-Identifier: GPL-3.0-only
+
+name: Export iOS Localizations
+on:
+  push:
+    branches: [develop]
+    paths:
+      - 'Supporting Files/Localizable.xcstrings'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  export-xliff:
+    runs-on: macos-latest
+    if: ${{ github.actor != 'github-actions' && !contains(github.event.head_commit.message, '[localization-bot]') }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode 16.4
+        run: sudo xcode-select --switch /Applications/Xcode_16.4.app
+
+      - name: Export XLIFF
+        run: |
+          rm -rf LocalizationExport
+          mkdir -p LocalizationExport
+          xcodebuild \
+            -project iosApp/OPass.xcodeproj \
+            -scheme OPass \
+            -localizationPath LocalizationExport \
+            -exportLocalizations
+          rm -f *.xliff
+          find LocalizationExport -name "*.xliff" -print0 | xargs -0 -I{} cp "{}" .
+
+      - name: Commit XLIFF to branch xliff
+        run: |
+          git fetch origin ios-xliff || true
+          git checkout -B ios-xliff origin/xliff || git checkout -B xliff
+          cp -f *.xliff .
+          git add *.xliff || true
+          if ! git diff --cached --quiet; then
+            git -c user.name="github-actions" -c user.email="actions@users.noreply.github.com" commit -m "[localization-bot] Export Apple XLIFF from String Catalogs"
+            git push origin xliff
+          else
+            echo "No XLIFF changes."
+          fi
